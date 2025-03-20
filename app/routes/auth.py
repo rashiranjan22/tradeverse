@@ -6,7 +6,7 @@ from app.models.user import User
 auth = Blueprint("auth", __name__)
 
 # --------------------------
-# ✅ SIGNUP ROUTE (POST)
+#  SIGNUP ROUTE (POST)
 # --------------------------
 @auth.route("/api/signup", methods=["POST"])
 def signup():
@@ -41,7 +41,7 @@ def signup():
 
 
 # --------------------------
-# ✅ LOGIN ROUTE (POST)
+#  LOGIN ROUTE (POST)
 # --------------------------
 @auth.route("/api/login", methods=["POST"])
 def login():
@@ -61,7 +61,7 @@ def login():
 
 
 # --------------------------
-# ✅ LOGOUT ROUTE (POST)
+# LOGOUT ROUTE (POST)
 # --------------------------
 @auth.route("/api/logout", methods=["POST"])
 @login_required
@@ -71,7 +71,7 @@ def logout():
 
 
 # --------------------------
-# ✅ DASHBOARD ROUTE (Protected)
+#  DASHBOARD ROUTE (Protected)
 # --------------------------
 @auth.route("/api/dashboard", methods=["GET"])
 @login_required
@@ -80,24 +80,24 @@ def dashboard():
 
 
 # --------------------------
-# ✅ CHECK USERNAME AVAILABILITY (AJAX)
+#  CHECK USERNAME AVAILABILITY (AJAX)
 # --------------------------
 @auth.route("/api/check_username", methods=["GET"])
 def check_username():
     username = request.args.get("username")
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
-        return jsonify({"message": "Username is taken ❌", "color": "red"})
-    return jsonify({"message": "Username is available ✅", "color": "green"})
+        return jsonify({"message": "Username is taken ", "color": "red"})
+    return jsonify({"message": "Username is available ", "color": "green"})
 
 
 # --------------------------
-# ✅ CHECK EMAIL AVAILABILITY (AJAX)
+# CHECK EMAIL AVAILABILITY (AJAX)
 # --------------------------
 @auth.route("/api/check_email", methods=["GET"])
 def check_email():
     email = request.args.get("email")
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
-        return jsonify({"message": "Email already registered ❌", "color": "red"})
-    return jsonify({"message": "Email is available ✅", "color": "green"})
+        return jsonify({"message": "Email already registered ", "color": "red"})
+    return jsonify({"message": "Email is available ", "color": "green"})
