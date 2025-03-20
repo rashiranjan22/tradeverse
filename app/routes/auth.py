@@ -6,6 +6,11 @@ from app.forms.auth_forms import SignupForm, LoginForm
 
 auth = Blueprint("auth", __name__)
 
+@auth.route("/api/test")
+def test_api():
+    return jsonify({"message": "Hello from Flask!"})
+
+
 @auth.route("/signup", methods=["GET", "POST"])
 def signup():
     form = SignupForm()
