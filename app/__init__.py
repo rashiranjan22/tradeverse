@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 from flask_apscheduler import APScheduler  
 from flask_cors import CORS
 from config import Config
+from flask import Flask, send_from_directory
+import os
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -14,7 +16,7 @@ scheduler = APScheduler()
 
 def create_app():
     app = Flask(__name__, template_folder="frontend/build", static_folder="frontend/build/static")
-    CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
+    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
     app.config.from_object(Config)
 
     # Ensure session persists across redirects
@@ -55,10 +57,19 @@ def create_app():
 
     login_manager.login_view = "auth.signup"
     login_manager.login_message_category = "info"
+    
+    print(app.url_map)  # This will show all registered routes
+
 
     # Serve React Frontend
-    @app.route("/")
-    def serve_react():
-        return send_from_directory(app.template_folder, "index.html")
-
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def serve_react(path):
+        """
+        Serves the React frontend for all routes except API requests.
+        """
+        if path != "" and os.path.exists(f"frontend/build/{path}"):
+            return send_from_directory("frontend/build", path)
+        return send_from_directory("frontend/build", "index.html")
+    
     return app
