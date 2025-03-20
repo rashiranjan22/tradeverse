@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 from flask_apscheduler import APScheduler  # Use Flask-APScheduler
 from config import Config
 
+
+
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
