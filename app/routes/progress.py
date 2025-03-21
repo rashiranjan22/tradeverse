@@ -28,7 +28,7 @@ def get_portfolio_progress(user_id):
 
 from flask_login import login_required, current_user
 
-@progress.route("/api/portfolio_progress")
+@progress.route("/api/portfolio_progress", methods=["GET","POST"])
 @login_required
 def portfolio_progress():
     df = get_portfolio_progress(current_user.id)  # Get data for the logged-in user
