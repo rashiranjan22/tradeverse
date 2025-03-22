@@ -1,0 +1,33 @@
+const tradesData = [
+  { user_id: 1, symbol: "AAPL", exchange: "NASDAQ", order_type: "Buy", quantity: 10, price: 150, status: "Completed", timestamp: "2025-03-22" },
+  { user_id: 2, symbol: "GOOGL", exchange: "NYSE", order_type: "Sell", quantity: 5, price: 280, status: "Pending", timestamp: "2025-03-21" },
+  { user_id: 3, symbol: "TSLA", exchange: "NASDAQ", order_type: "Buy", quantity: 2, price: 460, status: "Completed", timestamp: "2025-03-20" },
+  { user_id: 4, symbol: "MSFT", exchange: "NASDAQ", order_type: "Sell", quantity: 8, price: 310, status: "Pending", timestamp: "2025-03-19" },
+  { user_id: 1, symbol: "AAPL", exchange: "NASDAQ", order_type: "Buy", quantity: 10, price: 150, status: "Completed", timestamp: "2025-03-22" },
+  { user_id: 2, symbol: "GOOGL", exchange: "NASDAQ", order_type: "Sell", quantity: 5, price: 280, status: "Pending", timestamp: "2025-03-21" },
+  { user_id: 3, symbol: "TSLA", exchange: "NYSE", order_type: "Buy", quantity: 2, price: 460, status: "Completed", timestamp: "2025-03-20" },
+  { user_id: 4, symbol: "MSFT", exchange: "NYSE", order_type: "Sell", quantity: 8, price: 310, status: "Pending", timestamp: "2025-03-19" },
+  { user_id: 1, symbol: "AAPL", exchange: "NASDAQ", order_type: "Buy", quantity: 10, price: 150, status: "Completed", timestamp: "2025-03-22" },
+  { user_id: 2, symbol: "GOOGL", exchange: "NASDAQ", order_type: "Sell", quantity: 5, price: 280, status: "Pending", timestamp: "2025-03-21" },
+  { user_id: 3, symbol: "TSLA", exchange: "NYSE", order_type: "Buy", quantity: 2, price: 460, status: "Completed", timestamp: "2025-03-20" },
+  { user_id: 4, symbol: "MSFT", exchange: "NASDAQ", order_type: "Sell", quantity: 8, price: 310, status: "Pending", timestamp: "2025-03-19" },
+  { user_id: 1, symbol: "AAPL", exchange: "NASDAQ", order_type: "Buy", quantity: 10, price: 150, status: "Completed", timestamp: "2025-03-22" },
+  { user_id: 2, symbol: "GOOGL", exchange: "NASDAQ", order_type: "Sell", quantity: 5, price: 280, status: "Pending", timestamp: "2025-03-21" },
+  { user_id: 3, symbol: "TSLA", exchange: "NASDAQ", order_type: "Buy", quantity: 2, price: 460, status: "Pending", timestamp: "2025-03-20" },
+  { user_id: 4, symbol: "MSFT", exchange: "NASDAQ", order_type: "Sell", quantity: 8, price: 310, status: "Pending", timestamp: "2025-03-19" },
+  { user_id: 1, symbol: "AAPL", exchange: "NASDAQ", order_type: "Buy", quantity: 10, price: 150, status: "Pending", timestamp: "2025-03-22" },
+  { user_id: 2, symbol: "GOOGL", exchange: "NASDAQ", order_type: "Sell", quantity: 5, price: 280, status: "Pending", timestamp: "2025-03-21" },
+  { user_id: 3, symbol: "TSLA", exchange: "NASDAQ", order_type: "Buy", quantity: 2, price: 460, status: "Completed", timestamp: "2025-03-20" },
+  { user_id: 4, symbol: "MSFT", exchange: "NASDAQ", order_type: "Sell", quantity: 8, price: 310, status: "Pending", timestamp: "2025-03-19" },
+  { user_id: 1, symbol: "AAPL", exchange: "NASDAQ", order_type: "Buy", quantity: 10, price: 150, status: "Completed", timestamp: "2025-03-22" },
+  { user_id: 2, symbol: "GOOGL", exchange: "NASDAQ", order_type: "Sell", quantity: 5, price: 280, status: "Pending", timestamp: "2025-03-21" },
+  { user_id: 3, symbol: "TSLA", exchange: "NASDAQ", order_type: "Buy", quantity: 2, price: 460, status: "Pending", timestamp: "2025-03-20" },
+  { user_id: 4, symbol: "MSFT", exchange: "NASDAQ", order_type: "Sell", quantity: 8, price: 310, status: "Pending", timestamp: "2025-03-19" },
+  { user_id: 1, symbol: "AAPL", exchange: "NASDAQ", order_type: "Buy", quantity: 10, price: 150, status: "Pending", timestamp: "2025-03-22" },
+  { user_id: 2, symbol: "GOOGL", exchange: "NYSE", order_type: "Sell", quantity: 5, price: 280, status: "Pending", timestamp: "2025-03-21" },
+  { user_id: 3, symbol: "TSLA", exchange: "NYSE", order_type: "Buy", quantity: 2, price: 460, status: "Completed", timestamp: "2025-03-20" },
+  { user_id: 4, symbol: "MSFT", exchange: "NASDAQ", order_type: "Sell", quantity: 8, price: 310, status: "Pending", timestamp: "2025-03-19" },
+  
+];
+
+export default tradesData;
