@@ -55,6 +55,7 @@ def login():
 
     if user and user.check_password(data["password"]):
         login_user(user)
+        # print(session)
         return jsonify({"message": "Logged in successfully!", "user": {"id": user.id, "username": user.username}}), 200
     else:
         return jsonify({"error": "Invalid email or password"}), 401
@@ -101,3 +102,15 @@ def check_email():
     if existing_user:
         return jsonify({"message": "Email already registered ", "color": "red"})
     return jsonify({"message": "Email is available ", "color": "green"})
+
+
+@auth.route("/api/check_session", methods=["GET"])
+def check_session():
+    if current_user.is_authenticated():
+        return jsonify({
+            "user": {
+                "id": current_user.id,
+                "username": current_user.username
+            }
+        }), 200
+    return jsonify({"error": "Not logged in"}), 401

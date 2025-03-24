@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -16,19 +17,49 @@ scheduler = APScheduler()
 
 def create_app():
     app = Flask(__name__, template_folder="frontend/build", static_folder="frontend/build/static")
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
     app.config.from_object(Config)
 
-    # Ensure session persists across redirects
-    app.config["SESSION_PERMANENT"] = False  
+    # Session configuration
+    # Session & Cookie Configuration
+    app.config.update(
+        SESSION_COOKIE_SECURE=False,       # True in production (HTTPS only)
+        SESSION_COOKIE_HTTPONLY=True,      # Prevent JavaScript access
+        SESSION_COOKIE_SAMESITE='None',     # 'None' if using HTTPS + CORS
+        SESSION_COOKIE_DOMAIN=None,        # Explicitly set to None (default)
+    )
 
-    # Initialize extensions
+    origins = [
+        "http://localhost:3000",
+        # "https://localhost:3000",
+        "http://127.0.0.1:5000",
+        # "https://127.0.0.1:5000"
+    ]
+    CORS(
+        app,
+        resources={r"/*": {"origins": origins}}, 
+        supports_credentials=True
+    )
+    # CORS Configuration (REQUIRED for React-Flask communication)
+    # CORS(
+    #     app,
+    #     resources={
+    #         r"/*": {
+    #             "origins": "http://localhost:3000",
+    #             "supports_credentials": True,  # Required for cookies/session
+    #         }
+    #     },
+    #     expose_headers=["Set-Cookie"],
+    # )
+    # # Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    login_manager.session_protection = "strong"
     migrate = Migrate(app, db)
     scheduler.init_app(app)
     scheduler.start()
+
+    # ... rest of your existing code ...
 
     # Import models and functions inside app context
     with app.app_context():

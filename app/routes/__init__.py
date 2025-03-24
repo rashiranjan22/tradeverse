@@ -6,6 +6,7 @@ from app.routes.nse import nse_bp
 from app.routes.leaderboard import leaderboard_bp
 from app.routes.buysell import buysell
 from app.routes.progress import progress
+from app.routes.profile import profile
 
 def register_blueprints(app):
     """Registers all Blueprint routes."""
@@ -14,3 +15,4 @@ def register_blueprints(app):
     app.register_blueprint(leaderboard_bp, url_prefix="/leaderboard")
     app.register_blueprint(buysell, url_prefix="/buysell")
     app.register_blueprint(progress, url_prefix="/progress")
+    app.register_blueprint(profile, url_prefix="/profile")

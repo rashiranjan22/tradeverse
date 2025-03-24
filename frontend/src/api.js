@@ -26,9 +26,8 @@ export const loginUser = async (userData) => {
     try {
         const response = await fetch(`${API_URL}/auth/api/login`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
+            credentials: 'include',  // REQUIRED for cookies
             body: JSON.stringify(userData),
         });
 
@@ -36,7 +35,6 @@ export const loginUser = async (userData) => {
         if (!response.ok) {
             throw new Error(data.error || "Login failed");
         }
-
         return data;
     } catch (error) {
         console.error("Login error:", error);

@@ -1,6 +1,26 @@
 import React, { useState } from "react";
 import { loginUser } from "../api";
 import { useNavigate } from "react-router-dom";
+const API_URL = "http://127.0.0.1:5000";  // Remove `/auth/api`
+
+
+export const checkSession = async () => {
+    try {
+        const response = await fetch(`${API_URL}/auth/api/check_session`, {
+            method: "GET",
+            credentials: 'include',  // REQUIRED for cookies
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || "Session check failed");
+        }
+        return data;
+    } catch (error) {
+        console.error("Session check error:", error);
+        throw error;
+    }
+};
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -17,15 +37,19 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); 
-
-        const response = await loginUser(formData);
-
-        if (response.error) {
-            setError(response.error);
-        } else {
+        setError("");
+    
+        try {
+            const response = await loginUser(formData);
             alert(`Welcome, ${response.user.username}!`);
+            
+            // After login, verify the session immediately
+            const session = await checkSession();
+            console.log("Session verified:", session);
+            
             navigate("/dashboard");
+        } catch (error) {
+            setError(error.message);
         }
     };
 
