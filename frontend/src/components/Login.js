@@ -21,6 +21,7 @@ const Login = () => {
   };
 
   return (
+    <div class='trade-page'>
     <div className="container">
         <h1>Login</h1>
         <form method="POST" action="{{ url_for('auth.login') }}">
@@ -37,6 +38,8 @@ const Login = () => {
         <p>Don't have an account? <a href="/Signup">Sign Up</a></p>
 
     </div>
+    </div>
+    
 
   );
 };

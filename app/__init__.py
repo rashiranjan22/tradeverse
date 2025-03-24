@@ -46,16 +46,3 @@ def create_app():
             seconds=5
         )
 
-    # Register Blueprints
-    from app.routes import register_blueprints
-    register_blueprints(app)
-
-    # User Loader Function for Flask-Login
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
-
-    login_manager.login_view = "auth.signup"
-    login_manager.login_message_category = "info"
-
-    return app

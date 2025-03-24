@@ -116,3 +116,18 @@ def view_portfolio():
     portfolio = {symbol: qty for symbol, qty in portfolio.items() if qty > 0}
 
     return jsonify(portfolio), 200
+
+
+
+@buysell.route("/stocks", methods=["GET"])
+@login_required
+def get_stock_prices():
+    stocks = BhavCopy.query.distinct(BhavCopy.symbol).all()
+    
+    stock_data = {}
+    for stock in stocks:
+        stock_price = get_stock_value(stock.symbol)
+        if stock_price:
+            stock_data[stock.symbol] = stock_price
+
+    return jsonify(stock_data), 200

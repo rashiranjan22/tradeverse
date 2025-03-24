@@ -23,6 +23,7 @@ const Signup = () => {
   };
 
   return (
+    <div class='trade-page'>
     <div className="container">
       <h1>Sign Up</h1>
     <form onSubmit={handleSubmit}>
@@ -32,6 +33,7 @@ const Signup = () => {
       <button type="submit">Sign Up</button>
     </form>
     <p>Already have an account? <a href="/Login">Login</a></p>
+    </div>
     </div>
   );
 };

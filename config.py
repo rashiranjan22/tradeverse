@@ -16,10 +16,9 @@ class Config:
 
     # Properly formatted database URI
    
-    import urllib.parse
-
-    password = urllib.parse.quote_plus("Secularism@123")  # Encodes '@' as '%40'
-    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://riddhimagoyal3:{password}@localhost:3306/root"
+    SQLALCHEMY_DATABASE_URI = (
+            f"mysql+pymysql://root:Secularism%40123@localhost:3306/tradeverse_db"
+        )
 
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False

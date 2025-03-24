@@ -3,7 +3,7 @@ import Signup from "./components/Signup.js";
 import Login from "./components/Login.js";
 import Dashboard from "./components/Dashboard.js";
 import Landing from "./components/Landing.js";
-import Buy from "./components/Buy.js"; // Import Buy component
+import Buy from "./components/Buy.js"; 
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/landing" element={<Landing />} />
-        <Route path="/buy" element={<Buy />} /> {/* Add Buy Page */}
+        <Route path="/buy" element={<Buy />} /> 
       </Routes>
     </Router>
   );
