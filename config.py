@@ -15,10 +15,7 @@ class Config:
     DB_PORT = os.getenv("DB_PORT", "3306")
 
     # Properly formatted database URI
-   
     SQLALCHEMY_DATABASE_URI = (
-            f"mysql+pymysql://root:Secularism%40123@localhost:3306/tradeverse_db"
-        )
-
-    
+        f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False

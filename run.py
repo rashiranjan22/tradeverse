@@ -7,5 +7,5 @@ app = create_app()
 migrate = Migrate(app, db)
 
 if __name__ == "__main__":
-    start_scheduler(app)  # Pass app instance here
+    start_scheduler(app)
     app.run(debug=True)
