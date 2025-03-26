@@ -25,4 +25,3 @@ def update_leaderboard(app):
                 db.session.add(new_entry)
 
         db.session.commit()
-        print("Leaderboard updated successfully!")

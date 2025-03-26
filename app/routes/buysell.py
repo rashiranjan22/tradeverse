@@ -1,10 +1,15 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify,  render_template
 from app import db
 from app.models import User, Transaction, Order, BhavCopy
 from app.utils import pseudo_stock_value
 from flask_login import current_user, login_required
 
 buysell = Blueprint("trading", __name__)
+
+
+@buysell.route("/")
+def trading_page():
+    return render_template("buysell.html")
 
 def get_stock_value(symbol):
     latest_data = BhavCopy.query.filter_by(symbol=symbol).order_by(BhavCopy.trade_date.desc()).first()
