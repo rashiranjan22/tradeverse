@@ -188,3 +188,36 @@ export default LeaderboardContextProvider;
 export { LeaderboardContext };
 
 */
+
+
+
+// In your leaderboard-data-store.js (or equivalent)
+import { fetchLeaderboard } from 'frontend\\src\\api';  // Adjust path as needed
+
+
+const LeaderboardProvider = ({ children }) => {
+    const [leaderboardData, setLeaderboardData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const loadLeaderboard = async () => {
+            try {
+                const data = await fetchLeaderboard();
+                setLeaderboardData(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        loadLeaderboard();
+    }, []);
+
+    return (
+        <LeaderboardContext.Provider value={{ leaderboardData, loading, error }}>
+            {children}
+        </LeaderboardContext.Provider>
+    );
+};

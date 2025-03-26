@@ -41,3 +41,25 @@ export const loginUser = async (userData) => {
         throw error;
     }
 };
+
+
+
+
+export const fetchLeaderboard = async () => {
+    try {
+      const response = await fetch(`${API_URL}/leaderboard/`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',  // REQUIRED for cookies
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch leaderboard');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error("Leaderboard fetch error:", error);
+      throw error;
+    }
+  };
