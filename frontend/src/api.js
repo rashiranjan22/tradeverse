@@ -63,3 +63,35 @@ export const fetchLeaderboard = async () => {
       throw error;
     }
   };
+
+
+
+  // Add to your existing API functions
+  export const fetchTransactions = async () => {
+    try {
+      const response = await fetch(`${API_URL}/buysell/api/transactions`, {
+        method: "GET",
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const text = await response.text();
+      console.log("Raw response:", text); // Debug the raw response
+      
+      try {
+        return JSON.parse(text);
+      } catch (jsonError) {
+        console.error("Failed to parse JSON:", jsonError);
+        throw new Error("Invalid JSON response from server");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      throw error;
+    }
+  };
