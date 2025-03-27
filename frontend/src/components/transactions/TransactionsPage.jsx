@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 import { TransactionsContext } from './store';
 import TransactionsList from './TransactionsList';
 import TransactionFilters from './TransactionFilters';
+import './styles.css';
 
 const TransactionsPage = () => {
   const { transactions, loading, error } = React.useContext(TransactionsContext);
@@ -18,21 +19,23 @@ const TransactionsPage = () => {
     return matchesSearch && matchesStatus && matchesOrderType;
   });
 
-  if (loading) return <Container className="text-center py-5">Loading transactions...</Container>;
-  if (error) return <Container className="text-center py-5 text-danger">Error: {error}</Container>;
+  if (loading) return <Container className="no-transactions">Loading transactions...</Container>;
+  if (error) return <Container className="no-transactions text-danger">Error: {error}</Container>;
 
   return (
-    <Container className="py-4">
-      <h2 className="mb-4">Your Transactions</h2>
+    <Container className="transactions-container">
+      <h2 className="transactions-header">Your Transactions</h2>
       
-      <TransactionFilters
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        orderTypeFilter={orderTypeFilter}
-        setOrderTypeFilter={setOrderTypeFilter}
-      />
+      <div className="transaction-filters">
+        <TransactionFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          orderTypeFilter={orderTypeFilter}
+          setOrderTypeFilter={setOrderTypeFilter}
+        />
+      </div>
       
       <TransactionsList transactions={filteredTransactions} />
     </Container>

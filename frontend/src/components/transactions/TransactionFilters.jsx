@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import './styles.css';
 
 const TransactionFilters = ({ 
   searchTerm, 
@@ -10,13 +11,14 @@ const TransactionFilters = ({
   setOrderTypeFilter 
 }) => {
   return (
-    <div className="mb-4 p-3 bg-light rounded">
+    <div className="transaction-filters">
       <Form.Group className="mb-3">
         <Form.Control
           type="text"
           placeholder="Search by symbol..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="form-control-lg"
         />
       </Form.Group>
       
@@ -27,6 +29,7 @@ const TransactionFilters = ({
             <Form.Select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
+              className="form-select-lg"
             >
               <option value="">All Statuses</option>
               <option value="Completed">Completed</option>
@@ -41,6 +44,7 @@ const TransactionFilters = ({
             <Form.Select
               value={orderTypeFilter}
               onChange={(e) => setOrderTypeFilter(e.target.value)}
+              className="form-select-lg"
             >
               <option value="">All Types</option>
               <option value="Buy">Buy</option>

@@ -119,28 +119,28 @@ def view_portfolio():
 
 
 
-@buysell.route("/api/transactions", methods=["GET,POST"])
+@buysell.route("/api/transactions", methods=["GET"])
 @login_required
 def get_transactions():
     try:
-        # Fetch transactions for the logged-in user
         transactions = Transaction.query.filter_by(user_id=current_user.id).order_by(Transaction.timestamp.desc()).all()
         
-        # Convert transactions to JSON format
         transactions_list = [
             {
                 "id": tx.id,
                 "symbol": tx.symbol,
                 "order_type": tx.order_type,
                 "quantity": tx.quantity,
-                "price": tx.price,
+                "price": float(tx.price),  # Ensure price is serializable
                 "status": tx.status,
-                "timestamp": tx.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                "timestamp": tx.timestamp.isoformat(),  # Convert datetime to string
             }
             for tx in transactions
         ]
 
+        print(transactions_list)  # Debug what's being sent
         return jsonify(transactions_list), 200
 
     except Exception as e:
+        print(f"Error: {str(e)}")  # Log any errors
         return jsonify({"error": str(e)}), 500

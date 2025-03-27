@@ -5,12 +5,14 @@ import TransactionStatusBadge from './TransactionStatusBadge';
 
 const TransactionCard = ({ transaction }) => {
   return (
-    <Card className="mb-3 shadow-sm">
+    <Card className="transaction-card">
       <Card.Body>
         <div className="d-flex justify-content-between align-items-start">
           <div>
-            <Card.Title className="mb-1">{transaction.symbol}</Card.Title>
-            <Card.Subtitle className="text-muted small">
+            <Card.Title className="transaction-symbol mb-1">
+              {transaction.symbol}
+            </Card.Title>
+            <Card.Subtitle className="transaction-meta">
               {new Date(transaction.timestamp).toLocaleString()}
             </Card.Subtitle>
           </div>
@@ -19,10 +21,14 @@ const TransactionCard = ({ transaction }) => {
           </div>
         </div>
         
-        <div className="mt-3 d-flex justify-content-between">
+        <div className="transaction-details mt-3 d-flex justify-content-between">
           <div>
-            <span className="d-block">Quantity: {transaction.quantity}</span>
-            <span className="d-block">Price: ${transaction.price.toFixed(2)}</span>
+            <p className="transaction-detail-item mb-2">
+              <strong>Quantity:</strong> {transaction.quantity}
+            </p>
+            <p className="transaction-detail-item mb-0">
+              <strong>Price:</strong> ${transaction.price.toFixed(2)}
+            </p>
           </div>
           <TransactionStatusBadge status={transaction.status} />
         </div>

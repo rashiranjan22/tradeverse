@@ -5,7 +5,7 @@ import './styles.css';
 const TransactionsList = ({ transactions }) => {
   if (transactions.length === 0) {
     return (
-      <div className="text-center py-4">
+      <div className="no-transactions">
         <p>No transactions found</p>
       </div>
     );
