@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link if using React Router
 import { signupUser } from "../api"; // Import from api.js
 
 const Signup = () => {
@@ -40,6 +41,12 @@ const Signup = () => {
                 <input type="password" name="confirm_password" placeholder="Confirm Password" onChange={handleChange} required />
                 <button type="submit">Sign Up</button>
             </form>
+
+            {/* Add "Go to Login" option */}
+            <p>
+                Already have an account?{" "}
+                <Link to="/login">Log in here</Link>
+            </p>
         </div>
     );
 };

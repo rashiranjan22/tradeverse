@@ -9,17 +9,16 @@ import Profile from './components/Profile';
 import './App.css';
 import Signup from "./components/Signup.js";
 import Login from "./components/Login.js";
+import Landing from "./components/Landing.js";
 // import Dashboard from "./components/Dashboard.js";
-// import Landing from "./components/Landing.js";
 import Buy from "./components/Buy.js"; // Import Buy compone
 function App() {
   return (
-
     <LeaderboardProvider>
       <TransactionsProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Leaderboard />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/signup" element={<Signup />} />
