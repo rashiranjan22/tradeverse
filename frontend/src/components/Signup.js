@@ -1,39 +1,47 @@
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./login.css";
-
-
+import React, { useState } from "react";
+import { signupUser } from "../api"; // Import from api.js
 
 const Signup = () => {
-  const [user, setUser] = useState({ username: "", email: "", password: "" });
-  const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+    });
 
-  const handleChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://127.0.0.1:5000/auth/signup", user);
-      alert("Signup successful! Please login.");
-      navigate("/login");
-    } catch (err) {
-      alert(err.response.data.message);
-    }
-  };
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-  return (
-    <div className="container">
-      <h1>Sign Up</h1>
-    <form onSubmit={handleSubmit}>
-      <input name="username" placeholder="Username" onChange={handleChange} />
-      <input name="email" placeholder="Email" onChange={handleChange} />
-      <input name="password" type="password" placeholder="Password" onChange={handleChange} />
-      <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="/Login">Login</a></p>
-    </div>
-  );
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(""); // Clear previous errors
+
+        try {
+            const data = await signupUser(formData);
+            setSuccess(data.message); // Show success message
+        } catch (err) {
+            setError(err.message); // Show error message
+        }
+    };
+
+    return (
+        <div>
+            <h2>Signup</h2>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success && <p style={{ color: "green" }}>{success}</p>}
+            <form onSubmit={handleSubmit}>
+                <input type="text" name="username" placeholder="Username" onChange={handleChange} required />
+                <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                <input type="password" name="confirm_password" placeholder="Confirm Password" onChange={handleChange} required />
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    );
 };
 
 export default Signup;

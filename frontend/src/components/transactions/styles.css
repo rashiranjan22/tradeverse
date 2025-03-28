@@ -1,0 +1,78 @@
+/* transactions/styles.css */
+.transactions-container {
+  padding: 20px 0;
+}
+
+.transactions-header {
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.transactions-list {
+  max-height: 600px;
+  overflow-y: auto;
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-card {
+  transition: all 0.3s ease;
+  margin-bottom: 0; /* Remove since we're using gap */
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.transaction-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-color: #bdbdbd;
+}
+
+.transaction-filters {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.transaction-symbol {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.transaction-meta {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.transaction-details {
+  margin-top: 12px;
+}
+
+.transaction-detail-item {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.transaction-status-badge {
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.no-transactions {
+  text-align: center;
+  padding: 40px 0;
+  color: #6c757d;
+}

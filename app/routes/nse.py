@@ -69,3 +69,36 @@ def fetch_bhavcopy():
         with open('./logs/cron_log.txt', 'a') as log_file:
             log_file.write(f"[{datetime.datetime.now()}] Error fetching data: {e}\n")
         return jsonify({"error": str(e)}), 500
+
+
+#get the data of stocks
+@nse_bp.route("/stocks", methods=["GET"])
+def get_stocks():
+    try:
+        stocks = BhavCopy.query.all()
+        stock_data = [
+            {
+                "symbol": stock.symbol,
+                "series": stock.series,
+                "trade_date": stock.trade_date.strftime("%d-%m-%Y"),
+                "prev_close": stock.prev_close,
+                "open_price": stock.open_price,
+                "high": stock.high,
+                "low": stock.low,
+                "last_price": stock.last_price,
+                "close_price": stock.close_price,
+                "avg_price": stock.avg_price,
+                "volume": stock.volume,
+                "turnover_lacs": stock.turnover_lacs,
+                "no_of_trades": stock.no_of_trades,
+            }
+            for stock in stocks
+        ]
+        return jsonify(stock_data), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+

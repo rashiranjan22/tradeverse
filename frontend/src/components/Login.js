@@ -1,44 +1,69 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { loginUser } from "../api";
 import { useNavigate } from "react-router-dom";
-import "./login.css"
+const API_URL = "http://127.0.0.1:5000";  // Remove `/auth/api`
+
+
+export const checkSession = async () => {
+    try {
+        const response = await fetch(`${API_URL}/auth/api/check_session`, {
+            method: "GET",
+            credentials: 'include',  // REQUIRED for cookies
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || "Session check failed");
+        }
+        return data;
+    } catch (error) {
+        console.error("Session check error:", error);
+        throw error;
+    }
+};
 
 const Login = () => {
-  const [user, setUser] = useState({ email: "", password: "" });
-  const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
 
-  const handleChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://127.0.0.1:5000/auth/login", user);
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
-    } catch (err) {
-      alert(err.response.data.message);
-    }
-  };
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-  return (
-    <div className="container">
-        <h1>Login</h1>
-        <form method="POST" action="{{ url_for('auth.login') }}">
-            {/* <label for="username">Username:</label> */}
-            <input name="username" placeholder="Username" onChange={handleChange} required/> 
-            {/* <input type="text" id="username" name="username" required/> */}
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+    
+        try {
+            const response = await loginUser(formData);
+            alert(`Welcome, ${response.user.username}!`);
             
-            {/* <label for="password">Password:</label> */}
-            <input name="password" type="password" placeholder="Password" onChange={handleChange} required/>
-            {/* <input type="password" id="password" name="password" required/> */}
+            // After login, verify the session immediately
+            const session = await checkSession();
+            console.log("Session verified:", session);
             
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="/Signup">Sign Up</a></p>
+            navigate("/dashboard");
+        } catch (error) {
+            setError(error.message);
+        }
+    };
 
-    </div>
-
-  );
+    return (
+        <div>
+            <h2>Login</h2>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <form onSubmit={handleSubmit}>
+                <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    );
 };
 
 export default Login;

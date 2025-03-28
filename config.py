@@ -15,11 +15,7 @@ class Config:
     DB_PORT = os.getenv("DB_PORT", "3306")
 
     # Properly formatted database URI
-   
-    import urllib.parse
-
-    password = urllib.parse.quote_plus("Secularism@123")  # Encodes '@' as '%40'
-    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://riddhimagoyal3:{password}@localhost:3306/root"
-
-    
+    SQLALCHEMY_DATABASE_URI = (
+        f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
