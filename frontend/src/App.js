@@ -4,6 +4,8 @@ import { LeaderboardProvider } from './components/leaderboard/store';
 import { TransactionsProvider } from './components/transactions/store';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import TransactionsPage from './components/transactions/TransactionsPage.jsx';
+import PortfolioProgress from "./components/PortfolioProgress";
+
 
 import Profile from './components/Profile';
 import './App.css';
@@ -21,6 +23,7 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/transactions" element={<TransactionsPage />} />
+            <Route path="/progress" element={<PortfolioProgress />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
