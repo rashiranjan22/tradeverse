@@ -4,6 +4,7 @@ from app.models import BhavCopy
 import pandas as pd
 import datetime
 from nselib import capital_market
+import os
 
 
 nse_bp = Blueprint("nse", __name__)
@@ -59,17 +60,28 @@ def fetch_bhavcopy():
             db.session.bulk_save_objects(entries_to_add)
             db.session.commit()
         
-        with open('./logs/cron_log.txt', 'a') as log_file:
+        # Ensure logs directory exists
+        log_dir = "./logs"
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
+        with open(os.path.join(log_dir, "cron_log.txt"), "a") as log_file:
             log_file.write(f"[{datetime.datetime.now()}] BhavCopy data updated successfully!\n")
 
         return jsonify({"message": "BhavCopy data updated successfully!"}), 200
 
     except Exception as e:
         db.session.rollback()  # Rollback in case of error
-        with open('./logs/cron_log.txt', 'a') as log_file:
-            log_file.write(f"[{datetime.datetime.now()}] Error fetching data: {e}\n")
-        return jsonify({"error": str(e)}), 500
+        
+        # Ensure logs directory exists
+        log_dir = "./logs"
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
 
+        with open(os.path.join(log_dir, "cron_log.txt"), "a") as log_file:
+            log_file.write(f"[{datetime.datetime.now()}] Error fetching data: {e}\n")
+
+        return jsonify({"error": str(e)}), 500
 
 #get the data of stocks
 @nse_bp.route("/stocks", methods=["GET"])
