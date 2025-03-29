@@ -28,7 +28,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          {/* <Route path="/landing" element={<Landing />} /> */}
           <Route path="/buy" element={<Buy />} /> {/* Add Buy Page */}
           </Routes>
         </Router>
