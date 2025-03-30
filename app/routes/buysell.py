@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app import db
-from app.models import User, Transaction, Order, BhavCopy, Holding
+from app.models import User, Transaction, BhavCopy, Holding
 from app.utils.pseudo_stock_value import pseudo_stock_value
 from flask_login import current_user, login_required, current_user
 
@@ -65,15 +65,15 @@ def buy_stock():
     db.session.add(transaction)
 
     # Create order record
-    order = Order(
-        user_id=current_user.id,
-        symbol=symbol,
-        order_type="BUY",
-        quantity=quantity,
-        price=stock_price,
-        status="COMPLETED"
-    )
-    db.session.add(order)
+    # order = Order(
+    #     user_id=current_user.id,
+    #     symbol=symbol,
+    #     order_type="BUY",
+    #     quantity=quantity,
+    #     price=stock_price,
+    #     status="COMPLETED"
+    # )
+    # db.session.add(order)
 
     db.session.commit()
     return jsonify({"message": "Stock purchased successfully!"}), 200
@@ -117,15 +117,15 @@ def sell_stock():
     db.session.add(transaction)
 
     # Create order record
-    order = Order(
-        user_id=current_user.id,
-        symbol=symbol,
-        order_type="SELL",
-        quantity=quantity,
-        price=stock_price,
-        status="COMPLETED"
-    )
-    db.session.add(order)
+    # order = Order(
+    #     user_id=current_user.id,
+    #     symbol=symbol,
+    #     order_type="SELL",
+    #     quantity=quantity,
+    #     price=stock_price,
+    #     status="COMPLETED"
+    # )
+    # db.session.add(order)
 
     db.session.commit()
     return jsonify({"message": "Stock sold successfully!"}), 200
@@ -165,7 +165,7 @@ def get_transactions():
             for tx in transactions
         ]
 
-        print(transactions_list)  # Debug what's being sent
+        print(transactions_list)  # Debug 
         return jsonify(transactions_list), 200
 
     except Exception as e:
@@ -176,12 +176,11 @@ def get_transactions():
 @buysell.route("/api/get-latest-symbols", methods=["GET"])
 def get_latest_symbols():
     latest_date = db.session.query(db.func.max(BhavCopy.trade_date)).scalar()
-    print("Latest Date:", latest_date)  # Debugging output
+    print("Latest Date:", latest_date)  # Debug
 
     if latest_date is None:
         return jsonify({"error": "No records found"}), 404
     symbols = BhavCopy.query.filter_by(trade_date=latest_date).with_entities(BhavCopy.symbol).distinct().all()
     
-    # print("Fetched Symbols:", [symbol[0] for symbol in symbols])  # Debugging output
-    
+    # print("Fetched Symbols:", [symbol[0] for symbol in symbols])  # Debug
     return jsonify([symbol[0] for symbol in symbols])

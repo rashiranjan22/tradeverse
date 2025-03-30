@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify,request
 from app import db
 from app.models import BhavCopy
 import pandas as pd
@@ -36,7 +36,7 @@ def fetch_bhavcopy():
         for _, row in df.iterrows():
             existing_record = BhavCopy.query.filter_by(symbol=row["SYMBOL"], trade_date=trade_date).first()
             if existing_record:
-                continue  # Skip if already exists
+                continue  
 
             entry = BhavCopy(
                 symbol=row["SYMBOL"],
@@ -71,8 +71,7 @@ def fetch_bhavcopy():
         return jsonify({"message": "BhavCopy data updated successfully!"}), 200
 
     except Exception as e:
-        db.session.rollback()  # Rollback in case of error
-        
+        db.session.rollback()  
         # Ensure logs directory exists
         log_dir = "./logs"
         if not os.path.exists(log_dir):
@@ -113,4 +112,25 @@ def get_stocks():
 
 
 
+
+
+@nse_bp.route('/stock_prices', methods=['GET'])
+def get_stock_prices():
+    symbol = request.args.get('symbol')
+
+    if not symbol:
+        return jsonify({"error": "Symbol is required"}), 400
+
+    stock_data = (
+        db.session.query(BhavCopy.trade_date, BhavCopy.close_price)
+        .filter(BhavCopy.symbol == symbol)
+        .order_by(BhavCopy.trade_date.desc())
+        .limit(20)
+        .all()
+    )
+
+    if not stock_data:
+        return jsonify({"error": "No data found for this symbol"}), 404
+    result = [{"trade_date": data.trade_date.strftime("%Y-%m-%d"), "close_price": data.close_price} for data in stock_data]
+    return jsonify(result)
 

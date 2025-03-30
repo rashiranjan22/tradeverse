@@ -13,7 +13,9 @@ import Signup from "./components/Signup.js";
 import Login from "./components/Login.js";
 import Landing from "./components/Landing.js";
 // import Dashboard from "./components/Dashboard.js";
-import Buy from "./components/Buy.js"; // Import Buy compone
+import Buy from "./components/Buy.js"; 
+import StockChart from "./components/StockChart.js";
+
 function App() {
   return (
     <LeaderboardProvider>
@@ -29,6 +31,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           <Route path="/buy" element={<Buy />} /> {/* Add Buy Page */}
+          <Route path="/stock-chart/:symbol" element={<StockChart />} />
+
           </Routes>
         </Router>
       </TransactionsProvider>

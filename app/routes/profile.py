@@ -35,11 +35,10 @@ def change_password():
     data = request.json
     old_password = data.get("old_password")
     new_password = data.get("new_password")
-    # Fix: Use password_hash instead of password
-    if not current_user.check_password(old_password):  # Use the model's check_password method
+    if not current_user.check_password(old_password):  
         return jsonify({"error": "Incorrect old password"}), 400
 
-    current_user.set_password(new_password)  # Use the model's set_password method
+    current_user.set_password(new_password)  
     db.session.commit()
     return jsonify({"message": "Password changed successfully"})
 

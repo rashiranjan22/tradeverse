@@ -60,7 +60,6 @@ def create_app():
     scheduler.init_app(app)
     scheduler.start()
 
-    # ... rest of your existing code ...
 
     # Import models and functions inside app context
     with app.app_context():
@@ -90,7 +89,7 @@ def create_app():
     login_manager.login_view = "auth.signup"
     login_manager.login_message_category = "info"
     
-    print(app.url_map)  # This will show all registered routes
+    # print(app.url_map)  # debug
 
 
     # Serve React Frontend
