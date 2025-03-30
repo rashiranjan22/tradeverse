@@ -82,7 +82,7 @@ def buy_stock():
 @buysell.route("/sell", methods=["POST"])
 @login_required
 def sell_stock():
-    print("!!!!!",current_user)
+    # print("!!!!!",current_user)
     data = request.get_json()
     symbol = data.get("symbol")
     quantity = int(data.get("quantity"))

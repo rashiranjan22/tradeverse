@@ -15,12 +15,12 @@ def json_login_required(func):
     return wrapper
 
 @profile.route("/api/user_profile", methods=["GET"])
-# @json_login_required
 @login_required
 def get_user_profile():
 
     print("Fetching user profile...")  # Debugging
     print("Current User:", current_user)  # Ensure Flask recognizes the user
+    
     return jsonify({
         "id": current_user.id,
         "email": current_user.email,
