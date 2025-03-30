@@ -1,4 +1,6 @@
 import React from 'react';
+import Navbar from "./Navbar";
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LeaderboardProvider } from './components/leaderboard/store';
 import { TransactionsProvider } from './components/transactions/store';
@@ -21,6 +23,8 @@ function App() {
     <LeaderboardProvider>
       <TransactionsProvider>
         <Router>
+        <Navbar />
+
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
