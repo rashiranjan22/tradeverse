@@ -13,13 +13,11 @@ def start_scheduler(app):
 
     scheduler.add_job(
         run_fetch_bhavcopy,
-        trigger=CronTrigger(hour=0, minute=1),
+        trigger=CronTrigger(hour=0, minute=18),
         replace_existing=True
     )
 
     scheduler.start()
-
-
 
 
 # from apscheduler.schedulers.background import BackgroundScheduler

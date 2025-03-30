@@ -5,9 +5,7 @@ from app.models.user import User
 
 auth = Blueprint("auth", __name__)
 
-# --------------------------
-#  SIGNUP ROUTE (POST)
-# --------------------------
+
 @auth.route("/api/signup", methods=["POST"])
 def signup():
     data = request.get_json()
@@ -40,9 +38,7 @@ def signup():
         return jsonify({"error": str(e)}), 500
 
 
-# --------------------------
-#  LOGIN ROUTE (POST)
-# --------------------------
+
 @auth.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json()
@@ -55,15 +51,13 @@ def login():
 
     if user and user.check_password(data["password"]):
         login_user(user)
-        # print(session)
+        # print(session) #debug
         return jsonify({"message": "Logged in successfully!", "user": {"id": user.id, "username": user.username}}), 200
     else:
         return jsonify({"error": "Invalid email or password"}), 401
 
 
-# --------------------------
-# LOGOUT ROUTE (POST)
-# --------------------------
+
 @auth.route("/api/logout", methods=["POST"])
 @login_required
 def logout():
@@ -71,18 +65,14 @@ def logout():
     return jsonify({"message": "You have been logged out."}), 200
 
 
-# --------------------------
-#  DASHBOARD ROUTE (Protected)
-# --------------------------
+
 @auth.route("/api/dashboard", methods=["GET"])
 @login_required
 def dashboard():
     return jsonify({"message": f"Welcome to your dashboard, {current_user.username}!"})
 
 
-# --------------------------
-#  CHECK USERNAME AVAILABILITY (AJAX)
-# --------------------------
+
 @auth.route("/api/check_username", methods=["GET"])
 def check_username():
     username = request.args.get("username")
@@ -92,9 +82,7 @@ def check_username():
     return jsonify({"message": "Username is available ", "color": "green"})
 
 
-# --------------------------
-# CHECK EMAIL AVAILABILITY (AJAX)
-# --------------------------
+
 @auth.route("/api/check_email", methods=["GET"])
 def check_email():
     email = request.args.get("email")

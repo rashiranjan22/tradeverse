@@ -1,0 +1,14 @@
+.stock-chart-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .stock-chart-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  canvas {
+    max-width: 100%;
+  }
+  

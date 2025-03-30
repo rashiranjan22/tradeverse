@@ -5,5 +5,6 @@ class Holding(db.Model):
     symbol = db.Column(db.String(20), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     avg_price = db.Column(db.Float, nullable=False)
+    #remove avg_price
 
     user = db.relationship("User", backref="holdings")

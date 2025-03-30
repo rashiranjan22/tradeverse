@@ -1,45 +1,100 @@
-import React, { useState } from "react";
-import "./Buy.css"; // Import the CSS file
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // For navigation
+import "./Buy.css";
+
+const API_URL = "http://127.0.0.1:5000"; // Update with your backend URL
 
 const Trade = () => {
-  const [symbol, setSymbol] = useState("AAPL");
+  const [symbol, setSymbol] = useState("");
+  const [symbols, setSymbols] = useState([]); // List of available stocks
   const [quantity, setQuantity] = useState("");
-  const [action, setAction] = useState("Buy");
-  const [orderType, setOrderType] = useState("Market");
-  const [duration, setDuration] = useState("Day Only");
+  const navigate = useNavigate(); // Hook for navigation
 
-  const handleTradeSubmit = (e) => {
-    e.preventDefault();
-    alert(`Order placed: ${action} ${quantity} shares of ${symbol}`);
+  useEffect(() => {
+    // Fetch stock symbols from backend using Fetch API
+    const fetchSymbols = async () => {
+      try {
+        const response = await fetch(`${API_URL}/buysell/api/get-latest-symbols`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setSymbols(data);
+        setSymbol(data[0] || ""); // Set default symbol
+      } catch (error) {
+        console.error("Error fetching stock symbols:", error);
+      }
+    };
+
+    fetchSymbols();
+  }, []);
+
+  const handleTradeSubmit = async (action) => {
+    if (!symbol || !quantity) {
+      alert("Please select a stock and enter quantity.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/buysell/${action}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({ symbol, quantity }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      alert(error.message || "Trade failed.");
+    }
+  };
+
+  // Redirect to stock chart page
+  const handleViewStockChart = () => {
+    if (!symbol) {
+      alert("Please select a stock.");
+      return;
+    }
+    navigate(`/stock-chart/${symbol}`); // Navigate to Stock Chart page
   };
 
   return (
     <div className="trade-container">
-      {/* Top Bar with Account Info */}
       <div className="top-bar">
         <div className="account-info">
           <span><strong>Account Value:</strong> $100,000.00</span>
           <span><strong>Buying Power:</strong> $100,000.00</span>
           <span><strong>Cash:</strong> $100,000.00</span>
         </div>
-        {/* <div className="market-status">
-          ✅ Market is open. Closes in 3hr, 36min
-        </div> */}
       </div>
 
-      {/* Trading Form */}
       <div className="trade-form-container">
         <h2>Tradeverse - Buy & Sell Stocks</h2>
-        <form onSubmit={handleTradeSubmit} className="trade-form">
-          {/* Symbol Input */}
+        <form className="trade-form">
           <label>Stock Symbol</label>
           <select value={symbol} onChange={(e) => setSymbol(e.target.value)}>
-            <option value="AAPL">AAPL (Apple)</option>
-            <option value="TSLA">TSLA (Tesla)</option>
-            <option value="GOOGL">GOOGL (Google)</option>
+            {symbols.map((sym) => (
+              <option key={sym} value={sym}>{sym}</option>
+            ))}
           </select>
 
-          {/* Quantity */}
           <label>Quantity</label>
           <input
             type="number"
@@ -49,30 +104,18 @@ const Trade = () => {
             required
           />
 
-          {/* Action (Buy/Sell) */}
-          {/* <label>Action</label> */}
-          {/* <select value={action} onChange={(e) => setAction(e.target.value)}>
-            <option value="Buy">Buy</option>
-            <option value="Sell">Sell</option> */}
-          {/* </select> */}
+          {/* Buy & Sell Buttons */}
+          <button type="button" className="trade-btn buy-btn" onClick={() => handleTradeSubmit("buy")}>
+            Buy
+          </button>
+          <button type="button" className="trade-btn sell-btn" onClick={() => handleTradeSubmit("sell")}>
+            Sell
+          </button>
 
-          {/* Order Type */}
-          {/* <label>Order Type</label>
-          <select value={orderType} onChange={(e) => setOrderType(e.target.value)}>
-            <option value="Market">Market</option>
-            <option value="Limit">Limit</option>
-          </select> */}
-
-          {/* Duration */}
-          {/* <label>Duration</label>
-          <select value={duration} onChange={(e) => setDuration(e.target.value)}>
-            <option value="Day Only">Day Only</option>
-            <option value="Good Till Canceled">Good Till Canceled</option>
-          </select> */}
-
-          {/* Buttons */}
-          <button type="submit" className="trade-btn buy-btn">Buy</button>
-          <button type="submit" className="trade-btn sell-btn">Sell</button>
+          {/* View Stock Chart Button */}
+          <button type="button" className="trade-btn chart-btn" onClick={handleViewStockChart}>
+            View Stock Chart
+          </button>
         </form>
       </div>
     </div>

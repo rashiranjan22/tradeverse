@@ -15,12 +15,12 @@ def json_login_required(func):
     return wrapper
 
 @profile.route("/api/user_profile", methods=["GET"])
-# @json_login_required
 @login_required
 def get_user_profile():
 
     print("Fetching user profile...")  # Debugging
     print("Current User:", current_user)  # Ensure Flask recognizes the user
+    
     return jsonify({
         "id": current_user.id,
         "email": current_user.email,
@@ -35,11 +35,10 @@ def change_password():
     data = request.json
     old_password = data.get("old_password")
     new_password = data.get("new_password")
-    # Fix: Use password_hash instead of password
-    if not current_user.check_password(old_password):  # Use the model's check_password method
+    if not current_user.check_password(old_password):  
         return jsonify({"error": "Incorrect old password"}), 400
 
-    current_user.set_password(new_password)  # Use the model's set_password method
+    current_user.set_password(new_password)  
     db.session.commit()
     return jsonify({"message": "Password changed successfully"})
 
