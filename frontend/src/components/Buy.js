@@ -10,10 +10,10 @@ const Trade = () => {
   const [quantity, setQuantity] = useState("");
   const [virtualBalance, setVirtualBalance] = useState(null); // Virtual balance state
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
-    // Fetch stock symbols from backend using Fetch API
+    // Fetch stock symbols from backend 
     const fetchSymbols = async () => {
       try {
         const response = await fetch(`${API_URL}/buysell/api/get-latest-symbols`, {
@@ -80,10 +80,14 @@ const Trade = () => {
         },
         body: JSON.stringify({ symbol, quantity }),
       });
+      
+      const responseText = await response.text(); 
+
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        console.error(`HTTP Error! Status: ${response.status}, Response: ${responseText}`);
+        throw new Error(`Error ${response.status}: ${responseText}`);
+    }
 
       const data = await response.json();
       alert(data.message);
@@ -98,7 +102,7 @@ const Trade = () => {
       alert("Please select a stock.");
       return;
     }
-    navigate(`/stock-chart/${symbol}`); // Navigate to Stock Chart page
+    navigate(`/stock-chart/${symbol}`); 
   };
 
   return (
