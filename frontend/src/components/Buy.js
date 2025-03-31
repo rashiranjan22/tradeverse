@@ -8,6 +8,8 @@ const Trade = () => {
   const [symbol, setSymbol] = useState("");
   const [symbols, setSymbols] = useState([]); // List of available stocks
   const [quantity, setQuantity] = useState("");
+  const [virtualBalance, setVirtualBalance] = useState(null); // Virtual balance state
+
   const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
@@ -35,7 +37,31 @@ const Trade = () => {
       }
     };
 
+    const fetchVirtualBalance = async () => {
+      try {
+        const response = await fetch(`${API_URL}/profile/api/user_profile`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setVirtualBalance(data.virtual_balance);
+      } catch (error) {
+        console.error("Error fetching virtual balance:", error);
+      }
+    };
+
     fetchSymbols();
+    fetchVirtualBalance();
+
   }, []);
 
   const handleTradeSubmit = async (action) => {
@@ -79,9 +105,8 @@ const Trade = () => {
     <div className="trade-container">
       <div className="top-bar">
         <div className="account-info">
-          <span><strong>Account Value:</strong> $100,000.00</span>
-          <span><strong>Buying Power:</strong> $100,000.00</span>
-          <span><strong>Cash:</strong> $100,000.00</span>
+        <span><strong>Virtual Balance:</strong> ${virtualBalance !== null ? virtualBalance.toFixed(2) : "Loading..."}</span>
+
         </div>
       </div>
 

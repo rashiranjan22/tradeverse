@@ -18,8 +18,8 @@ def json_login_required(func):
 @login_required
 def get_user_profile():
 
-    print("Fetching user profile...")  # Debugging
-    print("Current User:", current_user)  # Ensure Flask recognizes the user
+    # print("Fetching user profile...")  # Debugging
+    # print("Current User:", current_user)  # Ensure Flask recognizes the user
     
     return jsonify({
         "id": current_user.id,
@@ -41,10 +41,3 @@ def change_password():
     current_user.set_password(new_password)  
     db.session.commit()
     return jsonify({"message": "Password changed successfully"})
-
-    # if not check_password_hash(current_user.password, old_password):
-    #     return jsonify({"error": "Incorrect old password"}), 400
-
-    # current_user.password = generate_password_hash(new_password)
-    # db.session.commit()
-    # return jsonify({"message": "Password changed successfully"})
