@@ -8,10 +8,12 @@ const Trade = () => {
   const [symbol, setSymbol] = useState("");
   const [symbols, setSymbols] = useState([]); // List of available stocks
   const [quantity, setQuantity] = useState("");
-  const navigate = useNavigate(); // Hook for navigation
+  const [virtualBalance, setVirtualBalance] = useState(null); // Virtual balance state
+
+  const navigate = useNavigate(); 
 
   useEffect(() => {
-    // Fetch stock symbols from backend using Fetch API
+    // Fetch stock symbols from backend 
     const fetchSymbols = async () => {
       try {
         const response = await fetch(`${API_URL}/buysell/api/get-latest-symbols`, {
@@ -35,7 +37,31 @@ const Trade = () => {
       }
     };
 
+    const fetchVirtualBalance = async () => {
+      try {
+        const response = await fetch(`${API_URL}/profile/api/user_profile`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setVirtualBalance(data.virtual_balance);
+      } catch (error) {
+        console.error("Error fetching virtual balance:", error);
+      }
+    };
+
     fetchSymbols();
+    fetchVirtualBalance();
+
   }, []);
 
   const handleTradeSubmit = async (action) => {
@@ -54,10 +80,14 @@ const Trade = () => {
         },
         body: JSON.stringify({ symbol, quantity }),
       });
+      
+      const responseText = await response.text(); 
+
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        console.error(`HTTP Error! Status: ${response.status}, Response: ${responseText}`);
+        throw new Error(`Error ${response.status}: ${responseText}`);
+    }
 
       const data = await response.json();
       alert(data.message);
@@ -72,16 +102,15 @@ const Trade = () => {
       alert("Please select a stock.");
       return;
     }
-    navigate(`/stock-chart/${symbol}`); // Navigate to Stock Chart page
+    navigate(`/stock-chart/${symbol}`); 
   };
 
   return (
     <div className="trade-container">
       <div className="top-bar">
         <div className="account-info">
-          <span><strong>Account Value:</strong> $100,000.00</span>
-          <span><strong>Buying Power:</strong> $100,000.00</span>
-          <span><strong>Cash:</strong> $100,000.00</span>
+        <span><strong>Virtual Balance:</strong> ${virtualBalance !== null ? virtualBalance.toFixed(2) : "Loading..."}</span>
+
         </div>
       </div>
 
