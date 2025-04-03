@@ -69,7 +69,7 @@ const Trade = () => {
       alert("Please select a stock and enter quantity.");
       return;
     }
-
+  
     try {
       const response = await fetch(`${API_URL}/buysell/${action}`, {
         method: "POST",
@@ -80,21 +80,30 @@ const Trade = () => {
         },
         body: JSON.stringify({ symbol, quantity }),
       });
+  
+      let data;
       
-      const responseText = await response.text(); 
-
-
+      // Attempt to parse JSON response
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        data = null;
+      }
+  
       if (!response.ok) {
-        console.error(`HTTP Error! Status: ${response.status}, Response: ${responseText}`);
-        throw new Error(`Error ${response.status}: ${responseText}`);
-    }
-
-      const data = await response.json();
-      alert(data.message);
+        const errorMessage = data?.message || `Error ${response.status}: ${response.statusText}`;
+        console.error(`HTTP Error! Status: ${response.status}, Message: ${errorMessage}`);
+        throw new Error(errorMessage);
+      }
+  
+      alert(data?.message || "Trade successful!");
     } catch (error) {
-      alert(error.message || "Trade failed.");
+      console.error("Trade Error:", error);
+      alert(error.message || "Trade failed due to an unknown error.");
     }
   };
+  
+  
 
   // Redirect to stock chart page
   const handleViewStockChart = () => {

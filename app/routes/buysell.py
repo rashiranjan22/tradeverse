@@ -82,30 +82,40 @@ def buy_stock():
 @buysell.route("/sell", methods=["POST"])
 @login_required
 def sell_stock():
-    # print("!!!!!",current_user)
     data = request.get_json()
-    symbol = data.get("symbol")
-    quantity = int(data.get("quantity"))
 
+    # Validate request data
+    if not data or "symbol" not in data or "quantity" not in data:
+        return jsonify({"error": "Missing stock symbol or quantity."}), 400
+
+    try:
+        symbol = data.get("symbol")
+        quantity = int(data.get("quantity"))  # Ensure it's an integer
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid quantity format."}), 400  # Handle bad input
+
+    # Fetch stock price
     stock_price = get_stock_value(symbol)
     if not stock_price:
         return jsonify({"error": "Stock data unavailable."}), 404
 
-    # Get holdings from the database
+    # Get user's stock holdings
     holding = Holding.query.filter_by(user_id=current_user.id, symbol=symbol).first()
-    if not holding or holding.quantity < quantity:
-        return jsonify({"error": "Insufficient stock holdings."}), 400
+    if not holding:
+        return jsonify({"error": "You do not own this stock."}), 400
+    if holding.quantity < quantity:
+        return jsonify({"error": f"You only own {holding.quantity} shares of {symbol}."}), 400
 
     total_earning = stock_price * quantity
     current_user.balance += total_earning
 
     # Update holdings table
     if holding.quantity == quantity:
-        db.session.delete(holding)  # Remove the holding if fully sold
+        db.session.delete(holding)  # Remove holding if fully sold
     else:
-        holding.quantity -= quantity  # Reduce the quantity
+        holding.quantity -= quantity  # Reduce holding
 
-    # Create transaction record
+    # Record transaction
     transaction = Transaction(
         user_id=current_user.id,
         symbol=symbol,
@@ -115,20 +125,10 @@ def sell_stock():
         status="COMPLETED"
     )
     db.session.add(transaction)
-
-    # Create order record
-    # order = Order(
-    #     user_id=current_user.id,
-    #     symbol=symbol,
-    #     order_type="SELL",
-    #     quantity=quantity,
-    #     price=stock_price,
-    #     status="COMPLETED"
-    # )
-    # db.session.add(order)
-
     db.session.commit()
-    return jsonify({"message": "Stock sold successfully!"}), 200
+
+    return jsonify({"message": "Stock sold successfully!", "new_balance": current_user.balance}), 200
+
 
 @buysell.route("/portfolio", methods=["GET,POST"])
 @login_required
