@@ -130,19 +130,29 @@ def sell_stock():
     db.session.commit()
     return jsonify({"message": "Stock sold successfully!"}), 200
 
-@buysell.route("/portfolio", methods=["GET,POST"])
+@buysell.route("/portfolio", methods=["GET", "POST"])
 @login_required
 def view_portfolio():
-    portfolio = {}
-    for order in current_user.orders:
-        if order.order_type == "BUY":
-            portfolio[order.symbol] = portfolio.get(order.symbol, 0) + order.quantity
-        elif order.order_type == "SELL":
-            portfolio[order.symbol] = portfolio.get(order.symbol, 0) - order.quantity
+    try:
+        holdings = Holding.query.filter_by(user_id=current_user.id).all()
 
-    portfolio = {symbol: qty for symbol, qty in portfolio.items() if qty > 0}
+        if not holdings:
+            return jsonify({"message": "No holdings found."}), 200
 
-    return jsonify(portfolio), 200
+        portfolio = [
+            {
+                "symbol": holding.symbol,
+                "quantity": holding.quantity,
+                "average_price": holding.avg_price
+            }
+            for holding in holdings
+        ]
+
+        return jsonify(portfolio), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 
