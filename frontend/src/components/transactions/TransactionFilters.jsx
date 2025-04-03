@@ -1,58 +1,35 @@
-import React from 'react';
-import { Form } from 'react-bootstrap';
-import './styles.css';
+import React from "react";
+import { Form, FormControl, InputGroup } from "react-bootstrap";
 
-const TransactionFilters = ({ 
-  searchTerm, 
-  setSearchTerm, 
-  statusFilter, 
-  setStatusFilter,
-  orderTypeFilter,
-  setOrderTypeFilter 
-}) => {
+const TransactionFilters = ({ search, setSearch, statusFilter, setStatusFilter, amountFilter, setAmountFilter }) => {
   return (
-    <div className="transaction-filters">
-      <Form.Group className="mb-3">
-        <Form.Control
+    <div className="d-flex flex-wrap gap-3 mb-4">
+      {/* Search Input */}
+      <InputGroup className="flex-grow-1">
+        <FormControl
           type="text"
           placeholder="Search by symbol..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="form-control-lg"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-      </Form.Group>
-      
-      <div className="row">
-        <div className="col-md-6">
-          <Form.Group className="mb-3">
-            <Form.Label>Status</Form.Label>
-            <Form.Select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="form-select-lg"
-            >
-              <option value="">All Statuses</option>
-              <option value="Completed">Completed</option>
-              <option value="Pending">Pending</option>
-            </Form.Select>
-          </Form.Group>
-        </div>
-        
-        <div className="col-md-6">
-          <Form.Group className="mb-3">
-            <Form.Label>Order Type</Form.Label>
-            <Form.Select
-              value={orderTypeFilter}
-              onChange={(e) => setOrderTypeFilter(e.target.value)}
-              className="form-select-lg"
-            >
-              <option value="">All Types</option>
-              <option value="Buy">Buy</option>
-              <option value="Sell">Sell</option>
-            </Form.Select>
-          </Form.Group>
-        </div>
-      </div>
+      </InputGroup>
+
+      {/* Status Dropdown */}
+      <Form.Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="flex-grow-1">
+        <option value="">All Status</option>
+        <option value="COMPLETED">Completed</option>
+        <option value="PENDING">Pending</option>
+      </Form.Select>
+
+      {/* Max Amount Input */}
+      <InputGroup className="flex-grow-1">
+        <FormControl
+          type="number"
+          placeholder="Max Amount"
+          value={amountFilter}
+          onChange={(e) => setAmountFilter(e.target.value)}
+        />
+      </InputGroup>
     </div>
   );
 };

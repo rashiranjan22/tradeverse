@@ -1,12 +1,9 @@
-import React from 'react';
-import { Badge } from 'react-bootstrap';
+import React from "react";
 
 const TransactionStatusBadge = ({ status }) => {
-  return (
-    <Badge pill bg={status === 'Completed' ? 'success' : 'warning'}>
-      {status}
-    </Badge>
-  );
+  const badgeClass = status === "COMPLETED" ? "badge bg-success" : "badge bg-warning text-dark";
+
+  return <span className={badgeClass}>{status}</span>;
 };
 
 export default TransactionStatusBadge;
