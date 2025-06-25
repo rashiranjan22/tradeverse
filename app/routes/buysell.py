@@ -64,17 +64,6 @@ def buy_stock():
     )
     db.session.add(transaction)
 
-    # Create order record
-    # order = Order(
-    #     user_id=current_user.id,
-    #     symbol=symbol,
-    #     order_type="BUY",
-    #     quantity=quantity,
-    #     price=stock_price,
-    #     status="COMPLETED"
-    # )
-    # db.session.add(order)
-
     db.session.commit()
     return jsonify({"message": "Stock purchased successfully!"}), 200
 
