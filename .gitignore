@@ -1,6 +1,8 @@
 .env
 tradeverse3/
+traVerse/
 again_tradeverse/
 __pycache__/
 venv/
 frontend/node_modules/
+migrations/

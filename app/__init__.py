@@ -30,28 +30,15 @@ def create_app():
 
     origins = [
         "http://localhost:3000",
-        # "https://localhost:3000",
         "http://127.0.0.1:5000",
         "http://127.0.0.1:3000",
-        # "https://127.0.0.1:5000"
     ]
     CORS(
         app,
         resources={r"/*": {"origins": origins}}, 
         supports_credentials=True
     )
-    # CORS Configuration (REQUIRED for React-Flask communication)
-    # CORS(
-    #     app,
-    #     resources={
-    #         r"/*": {
-    #             "origins": "http://localhost:3000",
-    #             "supports_credentials": True,  # Required for cookies/session
-    #         }
-    #     },
-    #     expose_headers=["Set-Cookie"],
-    # )
-    # # Initialize extensions
+
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
